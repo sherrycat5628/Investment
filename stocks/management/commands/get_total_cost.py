@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand
-from stocks.models import InvestmentRecord
 from django.db.models import Sum
+from stocks.models import InvestmentRecord
 
 
 class Command(BaseCommand):
