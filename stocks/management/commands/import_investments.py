@@ -9,15 +9,23 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument('filepath', type=str, help='Path to the Excel file')
+        parser.add_argument("--dry-run", action="store_true", help="Preview data without saving to the database.")
 
     def handle(self, *args, **kwargs):
         filepath = kwargs['filepath']
         self.stdout.write(f"Reading Excel file from: {filepath}")
+        dry_run = kwargs["dry_run"]
 
         try:
             df = pd.read_excel(filepath, engine='openpyxl')
         except Exception as e:
             self.stderr.write(f"Error reading Excel file: {e}")
+            return
+
+        if dry_run:
+            self.stdout.write("🔍 Dry-run 模式：僅顯示資料，不儲存至資料庫。\n")
+            columns_to_display = ['買進價', '金額', '總成本']
+            self.stdout.write(df[columns_to_display].head().to_string(index=False))
             return
 
         for idx, row in df.iterrows():
