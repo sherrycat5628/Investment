@@ -1,7 +1,7 @@
 # stocks/management/commands/import_investments.py
 import pandas as pd
 from django.core.management.base import BaseCommand
-from stocks.models import InvestmentRecord
+from stocks.models import InvestmentRecord, Stock
 
 
 class Command(BaseCommand):
@@ -58,11 +58,13 @@ class Command(BaseCommand):
                     self.stdout.write(f"Skipping row {idx}: missing 交易ID")
                     continue
 
+                stock_obj, _ = Stock.objects.get_or_create(name=stock_name)
+
                 record, created = InvestmentRecord.objects.update_or_create(
                     transaction_id=transaction_id,
                     defaults={
                         'transaction_type': transaction_type,
-                        'stock_name': stock_name,
+                        'stock': stock_obj,
                         'buy_date': buy_date,
                         'buy_price': row['買進價'],
                         'quantity': int(row['張數']),
