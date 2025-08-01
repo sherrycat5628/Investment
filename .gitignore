@@ -13,3 +13,15 @@ media/
 # Virtual Environment
 venv/
 .env
+
+#temp
+temp/
+
+#files
+*.xlsx
+
+# IDEs
+.vscode/
+
+# other
+.DS_Store

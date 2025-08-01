@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'stocks',  # Custom app for stock management
+    'django_extensions',  # Optional: for additional management commands and features
 ]
 
 MIDDLEWARE = [
