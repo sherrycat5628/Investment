@@ -58,7 +58,7 @@ class Command(BaseCommand):
                     self.stdout.write(f"Skipping row {idx}: missing 交易ID")
                     continue
 
-                record, created = InvestmentRecord.objects.get_or_create(
+                record, created = InvestmentRecord.objects.update_or_create(
                     transaction_id=transaction_id,
                     defaults={
                         'transaction_type': transaction_type,
@@ -79,10 +79,9 @@ class Command(BaseCommand):
                     }
                 )
                 if created:
-                    self.stdout.write(f"Imported new record: {record}")
+                    self.stdout.write(f"✅ 新增紀錄：{record}")
                 else:
-                    self.stdout.write(f"Row {idx}: Record already exists, skipped: {record}")
-
+                    self.stdout.write(f"🔁 更新紀錄：{record}")
             except Exception as e:
                 self.stderr.write(f"Error importing row {idx}: {e}")
                 self.stderr.write(f"Row data: {row.to_dict()}")
